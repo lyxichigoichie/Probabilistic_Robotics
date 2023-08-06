@@ -6,5 +6,5 @@ note of probabilistic robot
 ### Ⅰ Basic
 
 1. Introduction
-2. [Recursive State Estimation](./note/Recursive_State_Estimation.md)
+2. [Recursive State Estimation](./note/ch2_Recursive_State_Estimation.md)
 

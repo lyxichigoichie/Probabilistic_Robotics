@@ -1,0 +1,3 @@
+[submodule "probabilistic_robotics"]
+	path = probabilistic_robotics
+	url = https://github.com/pptacher/probabilistic_robotics
