@@ -135,7 +135,7 @@ p(x_t|x_{0:t-1},z_{1:t-1},u_{1:t})=p(x_t|x_{t-1},u_t)
 $$
 the property expressed by this equality is an example of **conditional independence**. It states that certain variables are independent of others if one knows the values of a third group of variables, the conditioning variables.
 
-![](figures/dynamic_Bayes_network.png)
+![](figures/ch2/dynamic_Bayes_network.png)
 
 based on the state completeness, the evolution of controls, states, and measurements can be modeled as dynamic Bayes network like the picture above
 
@@ -167,7 +167,7 @@ The state transition probability and the measurement probability together descri
 
 a belief reflects the robot's internal knowledge about the of the environment. state cannot be measured directly, it should **be inferred from data gained by sensor**
 
-![](figures/a_mobile_robot_estimation_state_of_door.png)
+![](figures/ch2/a_mobile_robot_estimation_state_of_door.png)
 
 for example, a mobile robot is estimating the state of a door. It can not directly measure the state of the door through sensor. It has to estimate the state of the door from the measurement data like distance and so on.
 

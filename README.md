@@ -15,5 +15,6 @@ note of probabilistic robot
 
 ## Appendix
 
+- [Problem unsolved](./note/problem.md)
 - [The Multivariate Normal Distribution](./note/ref/The_Multivariate_Normal_Distribution.pdf)
 - [Matrix_Differentiation](./note/Matrix_Differentiation.md)

@@ -55,11 +55,11 @@ Kalman filter implements belief computation in **linear Gaussian system**.
 
 ### Kalman filter algorithm
 
-<img src="figures/Kalman_filter_algothimn.png"  />
+<img src="figures/ch3/Kalman_filter_algothimn.png"  />
 
 ### Illustration of Kalman filter
 
-![](figures/illustration_of_Kalman_filter.png)
+![](figures/ch3/illustration_of_Kalman_filter.png)
 
 Suppose the robot moves along the horizontal axis in each diagram in Figure 3.2. Let the prior over the robot location be given by the normal distribution shown in Figure 3.2a. The robot queries its sensors on its location (e.g., a GPS system), and those return a measurement that is centered at the peak of the bold Gaussian in Figure 3.2b. This bold Gaussian illustrates this measurement: Its peak is the value predicted by the sensors, and its width (variance) corresponds to the uncertainty in the measurement. Combining the prior with the measurement, via lines 4 through 6 of the Kalman ﬁlter algorithm in Table 3.1, yields the bold Gaussian in Figure 3.2c. This belief’s mean lies between the two original means, and its uncertainty radius is smaller than both contributing Gaussians. The fact that the residual uncertainty is smaller than the contributing Gaussians may appear counter-intuitive, but it is a general characteristic of information
 integration in Kalman ﬁlters. Next, assume the robot moves towards the right. Its uncertainty grows
@@ -72,7 +72,7 @@ $$
 x_t = g(u_t,x_{t-1})+\varepsilon_t\\
 z_t = h(x_t)+\delta_t
 $$
-![](figures/linear_and_nonlinear_sys_in_kalmanfilter.png)
+![](figures/ch3/linear_and_nonlinear_sys_in_kalmanfilter.png)
 
 the key idea of extended Kalman filter is linearizing the  state transition probability and measurement probability via Taylor Expansion
 
@@ -83,7 +83,7 @@ $$
 
 here $\mu_{t-1}$ is the mean of $x_{t-1}$. while expand the function at this point? I think he may think that random variable appear neat the mean with the great probability, like normal distribution.
 
-![](figures/illustration_of_EKF.png)
+![](figures/ch3/illustration_of_EKF.png)
 
 here is a problem that why it only expand the function $g$ only for variable $x_{t-1}$ without $u_t$
 
@@ -93,7 +93,7 @@ h(x_t) \approx h(\overline{\mu_t})+\underbrace{\frac{\partial h(x_t)}{\partial x
 $$
 The extended Kalman filter algorithm is as follow
 
-![](figures/extended_Kalman_filter_algorithm.png)
+![](figures/ch3/extended_Kalman_filter_algorithm.png)
 
 ### Unscented Kalman Filter
 
@@ -165,7 +165,7 @@ unscented Kalman Filter **use several points** go through the nonlinear function
    \Sigma_t = \bar{\Sigma}_t-K_tS_tK_t^T
    $$
 
-![](figures/unscented_Kalman_filter_algorithm.png)
+![](figures/ch3/unscented_Kalman_filter_algorithm.png)
 
 ## Information Filter
 
@@ -181,13 +181,13 @@ x_t &= A_tx_{t-1}+B_tu_t+\varepsilon_t\\
 z_t &= C_tx_t + \delta_t
 \end{split}
 $$
-![](figures/information_filter_algorithm.png)
+![](figures/ch3/information_filter_algorithm.png)
 
 ### The Extended Information Filter
 
 the state transition probability and measurement probabilities are governed by nonlinear functions g and h
 
-![](figures/extended_information_filter_algorithm.png)
+![](figures/ch3/extended_information_filter_algorithm.png)
 
 
 
