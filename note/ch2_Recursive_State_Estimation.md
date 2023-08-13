@@ -193,14 +193,7 @@ it uses the past measurement $z_{1:t-1}$, past control action $u_{1:t-1}$ and cu
 
 calculate the belief distribution from measurement and control data. it is recursive
 
-```pseudocode
-Algorithm Bayes_filter(bel(x_{t-1}),u_t,z_t):
-	for all x_t do
-		\overline{bel}(x_t)=\int p(x_t|u_t,x_{t-1})bel(x_{t-1})dx_{t-1}
-		bel(x_t)=\eta p(z_t|x_t)\overline{bel}(x_t)
-	endfor
-	return bel(x_t)
-```
+![](figures/ch2/Bayes_filter_algorithm.png)
 
 #### mathematical derivation
 
