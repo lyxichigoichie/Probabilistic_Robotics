@@ -9,7 +9,8 @@ note of probabilistic robot
 2. [Recursive State Estimation](./note/ch2_Recursive_State_Estimation.md)
 2. [Gaussian Filters](./note/ch3_Gaussian_Filters.md)
 
-
+4. [Nonparametric Filter](./note/ch4_Nonparametric_Filters.md)
+5. [Robot Motion](./note/ch5_Robot_Motion.md)
 
 
 
