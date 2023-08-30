@@ -97,7 +97,11 @@ I=\frac{1}{n}\sum_{i=1}^{n}\frac{f(x_i)p(x_i)}{q(x_i)}=\frac{1}{n}\sum_{i=1}^{n}
 $$
 where $W(x_i)=\frac{p(x_i)}{q(x_i)}$ are the **importance weights**. 
 
-Since the normalizing factor $p(x_i)$ is not know, **we have to normalize the weights such that $\sum_{i=1}^{n}W(x_i)=1$
+![](figures/Monte_Carlo_Method/sequential_importance_simpling.png)
+
+The sample $x_i\sim q(x)$ represents the position and the weights $W(x_i)$ represents the probability appearing in this position since the weight is the ratio of $W(x_i)=\frac{p(x_i)}{q(x_i)}=\frac{\mathrm{target\space distribution}}{\mathrm{proposal\space distribution}}$. So, probability represented by density of sub-domain is convert to the position and the corresponding weight.
+
+Since the normalizing factor $p(x_i)$ is not know, **we have to normalize the weights such that $\sum_{i=1}^{n}W(x_i)=1$**
 $$
 I=\frac{\frac{1}{n}\sum_{i=1}^{n}W(x_i)f(x_i)}{\sum_{i=1}^{n}W(x_i)}=\frac{1}{n}\sum_{i=1}^{n}W_n(x_i)f(x_i)
 $$
@@ -113,36 +117,36 @@ $$
 
 In this section, we focus on **sequential state estimation** using sequential Monte Carlo.
 
-Consider the following nonlinear system, described by the difference equation and the observation model
+### Sequential Importance Sampling
+
+Consider the sequential situation
+$$
+E[f(\mathrm{x}_{1:n})] = \int f(\mathrm{x}_{1:n})p(\mathrm{x}_{1:n})\dd{\mathrm{x}_{1:n}}
+$$
+Here $\mathrm{x}_{1:n}$ means $x_1,x_2,\ldots,x_n$. 
+
+Do the same process as above
+$$
+E[f(\mathrm{x}_{1:n})] = 
+\int f(\mathrm{x}_{1:n}) \frac{p(\mathrm{x}_{1:n})}{q(\mathrm{x}_{1:n})}q(\mathrm{x}_{1:n})\dd{\mathrm{x}_{1:n}}
+$$
+from which we get the **important weight** $W(\mathrm{x}_{1:n})=\frac{p(\mathrm{x}_{1:n})}{q(\mathrm{x}_{1:n})}$ and **proposal distribution** $q(\mathrm{x}_{1:n})$.
+
+We can change the expression of important weight into iterative form.
 $$
 \begin{split}
-\mathbf{x}_k &= \mathbf{f}(\mathbf{x_{k-1}},\mathbf{w_{k-1}})\\
-\mathbf{z}_k &= \mathbf{h}(\mathbf{x}_k,\mathbf{v}_{k-1})
+W(\mathrm{x}_{1:n}) &= \frac{p(\mathrm{x}_{1:n})}{q(\mathrm{x}_{1:n})}\\
+&= \frac{p(\mathrm{x}_{1:n})}{q(x_n|\mathrm{x}_{1:n-1})q(\mathrm{x}_{1:n-1})}\\
+&= \frac{p(\mathrm{x}_{1:n})}{q(x_n|\mathrm{x}_{1:n-1})q(\mathrm{x}_{1:n-1})}\cdot \frac{p(\mathrm{x}_{1:n-1})}{p(\mathrm{x}_{1:n-1})}\\
+&= \frac{p(\mathrm{x}_{1:n})}{q(x_n|\mathrm{x}_{1:n-1})p(\mathrm{x}_{1:n-1})}\cdot \frac{p(\mathrm{x}_{1:n-1})}{q(\mathrm{x}_{1:n-1})}\\
+&= \frac{p(\mathrm{x}_{1:n})}{q(x_n|\mathrm{x}_{1:n-1})p(\mathrm{x}_{1:n-1})}\cdot W(\mathrm{x}_{1:n-1})\\
 \end{split}
 $$
-Denote by $\mathbf{Z}_k=\{\mathbf{z}_i|1\leqslant i\leqslant k\}$ the set of all observations up to time k, **conditionally independent given process with distribution $p(\mathbf{z}_k|\mathbf{x}_k)$.** Also assume that **the state sequence $\mathbf{x}_k$ is an hidden Markov process** with initial distribution $p(\mathbf{x}_0)$ and **transition distribution $p(\mathbf{x}_{k+1}|\mathbf{x}_k)$**
-
-Our goal is to **estimate recursively the expectation of the state $\mathbf{x}_{k+1}$**
+Since directly sampling $\mathrm{x}_{1:n}$ from $n$ dimension is equal to sample $\mathrm{x}_{1:n-1}$ firstly and sample $x_n$ sequentially. To calculate the weight at $t=n$ of the i-th sample from weight at $t=n-1$ of the i-th sample, we sample the state $x_n$ from $q(x_n|\mathrm{x}_{1:n-1}^{[i]})$. 
 $$
-E[\mathbf{x}_{k+1}]=E[\mathbf{f}(\mathbf{x}_{k},\mathbf{w}_{k})]
-=\int \mathbf{f}(\mathbf{x}_{k},\mathbf{w}_{k})p(\mathbf{x}_k|\mathbf{Z}_k) \dd{\mathbf{x}_k}
+W(\mathrm{x}_{1:n}^{[i]})=\frac{p(\mathrm{x}_{1:n}^{[i]})}{q(x_n^{[i]}|\mathrm{x}_{1:n-1}^{[i]})p(\mathrm{x}_{1:n-1}^{[i]})}W(\mathrm{x}_{1:n-1}^{[i]})
 $$
-**problem!!**
-
-1. the correct integral should be
-   $$
-   E[\mathbf{f}(\mathbf{x}_{k},\mathbf{w}_{k})]
-   =\int \mathbf{f}(\mathbf{x}_{k},\mathbf{w}_{k})p(\mathbf{x}_k,\mathbf{w}_k) \dd{\mathbf{x}_k \dd{\mathbf{w}_k}}
-   $$
-
-2. if the function f remove the noise, the expectation should be
-   $$
-   E[\mathbf{f}(\mathbf{x}_{k}]
-   =\int \mathbf{f}(\mathbf{x}_{k},\mathbf{w}_{k})p(\mathbf{x}_k,\mathbf{w}_k) \dd{\mathbf{x}_k \dd{\mathbf{w}_k}}
-   $$
-   
-
-
+Above is the mainly feature of sequential importance sampling. The following question is how to choose proposal distribution $q(x_n|\mathrm{x}_{1:n-1})$
 
 
 
