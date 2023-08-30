@@ -31,7 +31,7 @@
   
   under the fact that $p(x,y|z)=p(x|z)p(y|z)$ if X and Y are independent
   $$
-  p(z,y|z)=\frac{p(x,y,z)}{p(z)}\rightarrow p(x,y,z)=p(z)p(z,y|z)\\
+  p(x,y|z)=\frac{p(x,y,z)}{p(z)}\rightarrow p(x,y,z)=p(z)p(x,y|z)\\
   p(x|z,y)=\frac{p(x,y,z)}{p(y,z)}=\frac{p(x,y|z)p(z)}{p(y|z)p(z)}=\frac{p(x|z)p(y|z)p(z)}{p(y|z)p(z)}=p(x|z)
   $$
   **Conditional independence does not imply absolute independence**

@@ -103,11 +103,37 @@ so as the lower right figures in the Figure 4.3
 
 ![](figures/ch4/illustration_particle_filter.png)
 
+### Mathematical Derivation of the PF
 
+By sampling, we convert the probability density to the particle density in sub-domain. By **important sampling**, we convert the particle density in sub-domain to the position and the corresponding weight. See [Monte Carlo Method](Monte_Carlo_Method.md).
 
-
-
-
+**The target distribution in particle filter is posterior over all state sequences**
+$$
+\begin{split}
+bel(x_{0:t}) &= p(x_{0:t}|u_{1:t},z_{1:t})\\
+&\xlongequal[]{\mathrm{Bayes}} \eta p(z_t|x_{0:t},z_{1:t-1},u_{1:t})p(x_{0:t}|z_{1:t-1},u_{1:t})\\
+&\xlongequal{\mathrm{Markov}} \eta p(z_t|x_t)p(x_{0:t}|z_{1:t-1},u_{1:t})\\
+&= \eta p(z_t|x_t)p(x_t|x_{0:t-1},z_{1:t-1},u_{1:t})p(x_{0:t-1}|z_{1:t-1},u_{1:t})\\
+&\xlongequal{\mathrm{Markov}} \eta p(z_t|x_t)p(x_t|x_{t-1},u_t)p(x_{0:t-1}|z_{1:t-1},u_{1:t-1})
+\end{split}
+$$
+We set the proposal distribution which the particle are sampled from
+$$
+proposal = p(x_t|x_{t-1},u_t)bel(x_{0:t-1})=p(x_t|x_{t-1},u_t)p(x_{0:t-1}|z_{1:t-1},u_{1:t-1})
+$$
+the important weight is
+$$
+\begin{split}
+w_t^{[m]} &= \frac{\mathrm{target\space distribution}}{\mathrm{proposal\space distribution}}\\
+&= \frac{\eta p(z_t|x_t)p(x_t|x_{t-1},u_t)p(x_{0:t-1}|z_{1:t-1},u_{1:t-1})}{p(x_t|x_{t-1},u_t)p(x_{0:t-1}|z_{1:t-1},u_{1:t-1})}\\
+&= \eta p(z_t|x_t)
+\end{split}
+$$
+The most important point is **by resampling particles with probability proportional to $w_t^{[m]}$, the resulting particles are indeed distributed according to the product of the proposal and the importance weights $w_t^{[m]}$**
+$$
+w_t^{[m]}p(x_t|x_{t-1},u_t)p(x_{0:t-1}|z_{0:t-1},u_{0:t-1})=bel(x_{0:t})
+$$
+![](figures/ch4/particle_filter_algorithm.png)
 
 
 
