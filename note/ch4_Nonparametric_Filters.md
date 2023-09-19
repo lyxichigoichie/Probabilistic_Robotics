@@ -85,6 +85,8 @@ here $p(x)$ is the prior probability of the state $x$
 
 ## The Particle Filter
 
+[A fancy course about partial filter](https://www.youtube.com/watch?v=N7rH_VVtqRA)
+
 Just like histogram filters, particle filters approximate the posterior by a finite number of number of parameters. The key idea of the particle filter is to **represent the posterior $bel(x_t)$ by a set of random state samples drawn from this posterior**. Such approximation is nonparametric and therefore can represent a much broader space of distributions. 
 
 the samples of a posterior distribution are called *particles* and are denoted

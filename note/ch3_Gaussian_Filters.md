@@ -78,7 +78,7 @@ the key idea of extended Kalman filter is linearizing the  state transition prob
 
 assume that function $g$ is expanded at point $(u_t,\mu_{t-1})$
 $$
-g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}g(u_t,\mu_{t-1})\space(x_{t-1}-\mu_{t-1})
+g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}\space(x_{t-1}-\mu_{t-1})
 $$
 
 here $\mu_{t-1}$ is the mean of $x_{t-1}$. while expand the function at this point? I think he may think that random variable appear neat the mean with the great probability, like normal distribution.
