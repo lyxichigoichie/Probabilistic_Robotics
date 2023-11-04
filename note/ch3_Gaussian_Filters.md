@@ -81,7 +81,9 @@ $$
 g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}\space(x_{t-1}-\mu_{t-1})
 $$
 
-here $\mu_{t-1}$ is the mean of $x_{t-1}$. while expand the function at this point? I think he may think that random variable appear neat the mean with the great probability, like normal distribution.
+here $\mu_{t-1}$ is the mean of $x_{t-1}$. why expand the function at this point? I think he may think that random variable appear neat the mean with the great probability, like normal distribution.
+
+Why does it only find the partial derivative of $x_{t-1}$? I think it's because of that $u_t$ is a unambiguous input each time. It doesn't contain the uncertainty.
 
 ![](figures/ch3/illustration_of_EKF.png)
 
