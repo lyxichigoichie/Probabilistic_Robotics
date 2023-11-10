@@ -86,7 +86,7 @@ The extended Kalman filter localization algorithm is a special case of Markov lo
 
 Our EKF localization algorithm assumes that **the map is represented by collection of features**. At any point in time t, the robot gets to observe a vector of ranges and bearings to nearby features: $z_t=\{z_t^1,z_t^2,...\}$. We begin with a localization algorithm in which **all features are uniquely identifiable.** **The identity of a feature is expressed by a set of correspondence variables, denoted $c^i_t$, one for each feature vector $z_t^i$.** The second, more general version applies a maximum likelihood estimator too estimate the value of the latent correspondence variable, and uses the result of this estimation as if it were ground truth.
 
-### EKF Localization Algorithm
+### EKF Localization with known correspondences Algorithm
 
 In this discussion, we use the following assumptions. 
 
@@ -106,7 +106,7 @@ The EKF localization with known correspondences algorithm requires as its input 
 
 According to EKF algorithm
 $$
-g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}g(u_t,\mu_{t-1})\space(x_{t-1}-\mu_{t-1})\\
+g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}\space(x_{t-1}-\mu_{t-1})\\
 h(x_t) \approx h(\overline{\mu_t})+\underbrace{\frac{\partial h(x_t)}{\partial x_t}}_{=: H_t}(x_t-\overline{\mu}_t)\\
 \bar{\mu}_t = g(u_t,\mu_{t-1})\\
 \bar{\Sigma_t} = G_t\Sigma_{t-1}G_t^T+R_t
@@ -168,7 +168,7 @@ x\\y\\ \theta
 $$
 **The trick of EKF is its linearization operation.**
 $$
-g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}g(u_t,\mu_{t-1})\space(x_{t-1}-\mu_{t-1})
+g(u_t,x_{t-1})\approx g(u_t,\mu_{t-1})+\underbrace{\frac{\partial g(u_t,\mu_{t-1})}{\partial x_{t-1}}}_{=: G_t}\space(x_{t-1}-\mu_{t-1})
 $$
 The **Jacobian** $G_t$ is the derivative of th function $g$ with respect to $x_{t-1}$ evaluated at $u_t$ and $\mu_{t-1}$. [Matrix_Differentiation](./Matrix_Differentiation.md)
 $$
@@ -211,19 +211,98 @@ $$
 V_tM_tV_t^T
 $$
 
+Or let's explain it from a different angle.
+
+We do not decompose the into motion $[v_t, \omega_t]^T$ and noise $\mathcal{N}(0,M_t)$. We directly treat it as a random variable
+$$
+\begin{bmatrix}
+\hat{v}_t\\ \hat{\omega}_t
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_t \\ \omega_t
+\end{bmatrix}
++
+\begin{bmatrix}
+\varepsilon_{\alpha_1 v_t^2+\alpha_2\omega_t^2}\\
+\varepsilon_{\alpha_3 v_t^2+\alpha_4\omega_t^2}\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_t \\ \omega_t
+\end{bmatrix}
++
+\mathcal{N}(0,M_t)
+$$
+
+$$
+u_t=\begin{bmatrix}
+\hat{v}_t\\ \hat{\omega}_t
+\end{bmatrix}
+\sim
+\mathcal{N}(\begin{bmatrix} v_t\\ \omega_t\end{bmatrix},M_t)
+$$
+
+So the motion function is
+$$
+\underbrace{\begin{bmatrix}
+x'\\y'\\ \theta'
+\end{bmatrix}}_{x_t}
+=
+\underbrace{\begin{bmatrix}
+x\\y\\ \theta
+\end{bmatrix}
++
+\begin{bmatrix}
+-\frac{\hat{v}_t}{\hat{\omega_t}}\sin\theta+\frac{\hat{v}_t}{\hat{\omega}_t}\sin(\theta+\hat{\omega}_t\Delta t)\\
+\frac{\hat{v}_t}{\hat{\omega}_t}\cos\theta-\frac{\hat{v}_t}{\hat{\omega}_t}\cos(\theta+\hat{\omega}_t\Delta t)\\
+\hat{\omega}_t\Delta t
+\end{bmatrix}}_{g(u_t,x_{t-1})}
+$$
+use Taylor expansion to linearize function $g$. We expand it at point $(u_t=\begin{bmatrix}v_t\\ \omega_t\end{bmatrix},x_t=\mu_{t-1})$
+$$
+g(u_t,x_{t-1})=g(\begin{bmatrix}v_t\\ \omega_t\end{bmatrix},\mu_{t-1})
++\underbrace{\frac{\partial g}{\partial x_{t-1}}}_{G_t}\Delta x
++\underbrace{\frac{\partial g}{\partial u_t}}_{V_t}\Delta u
+$$
+here
+$$
+\Delta u=u_t-\begin{bmatrix}v_t\\ \omega_t\end{bmatrix}\space \sim \space \mathcal{N}(0,M_t)
+$$
+$V_t\Delta u$ can be viewed as a linear transformation on $\Delta u$. According to [Covariance_Matrix.md](./Covariance_Matrix.md), we
+$$
+Cov(V_t\Delta u)=V_tM_tV_t^T
+$$
+also
+$$
+Cov(x_{t-1})=Cov(\Delta x)=\Sigma_{t-1} \rightarrow Cov(G_t\Delta x)=G_t\Sigma_{t-1}G_t^T
+$$
+The covariance matrix of the prediction $\bar{x}_t=g(u_t,x_{t-1})$ is
+$$
+G_t\Sigma_{t-1}G_t^T+V_tM_tV_t^T
+$$
+
 2. Correction Step
 
+![](figures/ch7/algorithm_EKF_localization_known_correspondences_correction_step_1.png)
 
+Set the output of observation function $h(x_t)$ to be $z_t=[r_t,\phi_t,s_t]^T$. Line 9 to line 12 is the implement of observation function which match to $h(\bar{\mu}_t)$ in EKF algorithm line 5.
 
+The next is to calculate the Kalman gain and update
 
+![](figures/ch7/algorithm_EKF_localization_known_correspondences_correction_step_2.png)
 
+??? How to realize the accumulation of $\bar{\mu}_t=\bar{\mu}_t+K_t^i(z_t^i-\hat{z}_t^i)$ ????
 
+### EKF Localization with unknown correspondences Algorithm
 
+Without the correspondences, we have to add one step to determine the correspondence. **We use maximum likelihood estimator to determine the correspondence**
+$$
+\hat{c}_t=\mathop{\arg\max}_\limits{c_t}\space p(z_t|c_{1:t},m,z_{1:t-1},u_{1:t})
+$$
+![](figures/ch7/algorithm_EKF_localization_unknown_correspondences_ML_step.png)
 
-
-
-
-
+It can also be interpreted as minimize the Mahalanobis Distance between $z_t^i$ and the feature in map $\hat{z}_t^k$
 
 
 

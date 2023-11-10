@@ -334,7 +334,7 @@ If we denote the feature extractor as a function $f$, the features extracted fro
 
 In many robotics applications, features correspond to distinct objects in the physical world. For example, in indoor environments features may be door posts or windowsills; outdoors they may correspond to tree trunks or corners of buildings. **In robotics, it is common to call those physical objects landmarks.**
 
-The most common model for processing landmarks assumes that the sensor can measure **the range and the bearing of the landmark relative to the robot's local coordinate frame**. The feature extractor may generate a **signature** that may equally be an integer that characterizes the type of the observed landmark, or a multidimensional  vector characterizing a landmark.
+The most common model for processing landmarks assumes that the sensor can measure **the range and the bearing of the landmark relative to the robot's local coordinate frame**. The feature extractor may generate a **signature** that may equally be an integer (e.g. an average color) that characterizes the type of the observed landmark, or a multidimensional  vector characterizing a landmark (e.g. height and color).
 
 If we denote the range by $r$, the bearing by $\phi$, and the signature by $s$, the feature vector is given by a collection of triplets
 $$
@@ -357,7 +357,7 @@ $$
 
 We will **model noise in landmark perception by independent Gaussian noise** on the range, bearing, and the signature. The resulting measurement model is formulated for the case where the i-th feature at time t corresponds to the j-th landmark in the map. As usual, the robot pose is given by $x_t = (x, y, \theta)^T$ .
 
-??????? whom the i-th feature is belong to???  Is the j-th landmark a feature of the map???  why corresponding the i-th feature to the j-th landmark not the j-th landmark???
+??????? whom the i-th feature is belong to???  Is the j-th landmark a feature of the map???  why corresponding the i-th feature to the j-th landmark not the j-th landmark??? For example, there 6 landmarks in the map and they are [rabbit, dog, cat, bird]. Rabbit is the $1^{th}$ landmark. Dog is the $2^{th}$ landmark. Cat... Bird... At this time $t=t$, we observe 2 feature $z_t = [z_t^1,z_t^2]$. Which landmark does the feature belong to? If $z_t^1=bird$, that means the $1^{th}$ feature corresponds to $4^{th}$ landmark.
 $$
 \begin{bmatrix}
 r_t^i \\ \phi_t^i \\ s_t^i
