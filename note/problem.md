@@ -27,6 +27,16 @@
 
 5. In line 16,17 of Algorithm EKF_localization_known_correspondences at page 204, ??? How to realize the accumulation of $\bar{\mu}_t=\bar{\mu}_t+K_t^i(z_t^i-\hat{z}_t^i)$ ????
 
+6. page 401
+
+   - **problem 1: For**
+     $$
+     \Omega_t^0 = F_{x,m^+,m^0}F_{x,m^+,m^0}^T\Omega_t F_{x,m^+,m^0}F_{x,m^+,m^0}^T
+     $$
+     **Is not $\Omega_t^0 = F_{x,m^+,m^0}^T\Omega_t F_{x,m^+,m^0}$ enough? Why do he multiply one more $F$ matrix**
+
+   - **problem 2: We note that $\Omega_t^1,\Omega_t^2,\Omega_t^3$ could be obtained from $\Omega_t^0$, which means that they are margined from $p(x_t,m^0,m^+,m^-=0|z_{1:t},u_{1:t},c_{1:t})$. So, why they set $\Omega_t^0$ to be the information matrix of $p(x_t,m^0,m^+|m^-=0)$ in page 401?**
+
 
 
 
