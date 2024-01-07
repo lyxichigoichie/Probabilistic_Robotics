@@ -106,7 +106,7 @@ J_{\mathrm{GraphSLAM}}=x_0^T\Omega_0x_0+\sum_t(x_t-g(u_t,x_{t-1}))^TR_t^{-1}(x_t
 $$
 In the associated information matrix $\Omega$, **the off-diagonal elements are all zero with two exceptions**:
 
-1. Between any two consecutive poses $x_{t-1}$ and $x_t$ will be a non-zero value that represents the information link introduced by the control $u_t$.
+1. Between any two consecutive poses $x_{t-1}$ and $x_t$ will sbe a non-zero value that represents the information link introduced by the control $u_t$.
 2. Also non-zero will be any element between a map feature $m_j$ and a pose $x_t$, if $m_j$ was observed when the robot was a $x_t$.
 
 **All elements between pairs of different features remain zero. This reflects the fact that we never received information pertaining to their relative location -- all we receive in SLAM are measurements that constrain the location of a feature relative to a robot pose**.
